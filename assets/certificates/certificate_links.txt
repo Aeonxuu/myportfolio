@@ -1,0 +1,101 @@
+# Certificate links
+#
+# Format: a slug line, then its URL on the next line. The slug must match the
+# image filename without its extension. Lines starting with # are ignored.
+# This file is the source of truth; `npm run certs` regenerates
+# src/data/certificates.ts from it.
+#
+# STATUS: 18 of 23 confirmed. 5 still share URLs with each other, marked
+# UNRESOLVED below. Those render without a Verify button until fixed.
+
+certificate_advanced_frontend
+https://coursera.org/share/529aa1a9dc0da4ce7a8b89c41d2262c0
+
+certificate_angularjs
+https://coursera.org/share/cbc9b0286a44dfe94402ff094fe5b025
+
+certificate_automation_uipath
+https://coursera.org/share/9777f9ca3bf66178099b2bd5c5d0fc47
+
+certificate_backend_development_api
+https://coursera.org/share/f35e0a49c6bc5a9b7209dcf6a4a17dfe
+
+certificate_canva
+https://coursera.org/share/b044138a4caf04eab2aa6836a1227828
+
+certificate_cisco_networking
+https://coursera.org/share/ff8a53ffff184bf2554f2cae46285109
+
+certificate_cybersecurity
+https://coursera.org/share/67ce6ba22b04bb154dc40e2d82a9ca54
+
+certificate_django_framework
+https://coursera.org/share/cc98920587264f0e4dc8720f76b52544
+
+certificate_flutter_dart
+https://coursera.org/share/2e34ff043e0217d35264b0fe544c8a0f
+
+certificate_frontend_development
+https://coursera.org/share/17aaabcb85722084c76e2dfbab977f74
+
+certificate_iot_embedded_systems
+https://coursera.org/share/3eb244ebf1a8540bbc85130985f77f62
+
+certificate_iot_raspberry
+https://coursera.org/share/67a3da102d87b4382ff57b0e371306ab
+
+certificate_iot_specialization
+https://coursera.org/share/84854b703275a25437f905bb24e502e9
+
+certificate_java
+https://coursera.org/share/3fa7fc418292090615c86a8d6179d141
+
+certificate_linux_sql
+https://coursera.org/share/c29cf2e14b5522c63cd9acb066a1bc89
+
+certificate_mern_specialization
+https://coursera.org/share/7fc26ab1fd9d78e01f8449790db0c5c9
+
+certificate_operating_system_virtualization
+https://coursera.org/share/d1d80f6d032eddaf4512a9e3762a8114
+
+certificate_relational_database_administration
+https://coursera.org/share/22570abd367d6aa24cf4da9ce9ac0d24
+
+# ---------------------------------------------------------------------------
+# UNRESOLVED
+#
+# These five still point at URLs shared with each other. Replace each with its
+# own Share certificate URL from Coursera, then run `npm run certs`.
+# ---------------------------------------------------------------------------
+
+# UNRESOLVED: shares 7f77d640... with interfacing_arduino and frontend_with_react
+certificate_arduino_c_programming
+https://coursera.org/share/7f77d640ec35102273dcc2d3d7b3875c
+
+# UNRESOLVED: shares 7f77d640... with arduino_c_programming and frontend_with_react
+certificate_interfacing_arduino
+https://coursera.org/share/7f77d640ec35102273dcc2d3d7b3875c
+
+# UNRESOLVED: shares 7f77d640... with the two Arduino certificates above.
+# A React certificate almost certainly does not share a URL with Arduino ones.
+certificate_frontend_with_react
+https://coursera.org/share/7f77d640ec35102273dcc2d3d7b3875c
+
+# UNRESOLVED: shares be31b171... with iot_raspberry_python_programming.
+# May be legitimate if one is the specialization and the other a course in it.
+certificate_iot
+https://coursera.org/share/be31b1711f9b203cafa84ed316d96d5d
+
+# UNRESOLVED: shares be31b171... with iot
+certificate_iot_raspberry_python_programming
+https://coursera.org/share/be31b1711f9b203cafa84ed316d96d5d
+
+# ---------------------------------------------------------------------------
+# ORPHANED
+#
+# https://coursera.org/share/3bac956c18ea6070aa153ac864220432
+# Was previously listed under certificate_frontend_development, which has since
+# been corrected to 17aaabcb... This URL now belongs to nothing. Either it maps
+# to a certificate whose image is missing, or it can be discarded.
+# ---------------------------------------------------------------------------
