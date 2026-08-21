@@ -1,0 +1,238 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* ---------------------------------------------------------------------------
+   PALETTE
+
+   Two themes, one shape. Every component reads a token, never a raw hex, so
+   the toggle is a single attribute swap on <html>.
+
+   Page Theme Lock: the whole page is light or the whole page is dark. No
+   section inverts itself mid-scroll.
+
+   The violet changes VALUE between themes, never hue, and on dark it splits
+   into two jobs. Every pairing below was measured, not eyeballed: the original
+   single violet (#8B5CF6) put white button text at 4.23:1, under AA.
+
+   The light ground is neutral-cool with the same faint violet cast as the
+   dark ground, deliberately NOT warm cream (#F4F1EA and family), which is a
+   named AI-default palette.
+--------------------------------------------------------------------------- */
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Not pitch black. A charcoal with a real violet undertone (hue 262), so
+     the ground and the accent live in the same hue family and the violet
+     reads as belonging to the page rather than sitting on top of it. */
+  --canvas: #16131f; /* the ground                       */
+  --plate: #1e1a2b; /* cards and raised surfaces        */
+  --plate-2: #272235; /* hover state on a plate           */
+  --rule: rgb(255 255 255 / 0.08); /* borders, grid lines */
+  --rule-lit: rgb(255 255 255 / 0.14); /* emphasised border */
+  --type: #edeaf5; /* primary text                     */
+  --note: #9c97b3; /* secondary text, inspect notes    */
+  /* The violet splits by JOB, because no single value clears AA at both.
+     --mark is TEXT on the canvas (links, annotations): needs to be light here.
+     --mark-solid is a BACKGROUND under white text: needs to be dark here.
+     Measured: #A78CE8 is 7.10:1 on the canvas, #7343CC is 6.17:1 under white. */
+  --mark: #a78ce8; /* violet as text, on dark          */
+  --mark-solid: #7343cc; /* violet as a surface        */
+  --mark-tint: rgb(167 140 232 / 0.14); /* wash, inner border */
+  --on-mark: #ffffff; /* text on --mark-solid             */
+
+  /* Shadows tint to the ground. Never pure black on a light surface. */
+  --danger: #f87171; /* red-400, legible on a dark ground */
+
+  --shadow-plate: 0 1px 2px rgb(6 4 10 / 0.5), 0 8px 24px rgb(6 4 10 / 0.36);
+  /* Deliberately faint. Shadows tint to the ground, never pure black. */
+  --shadow-soft: 0 1px 2px rgb(6 4 10 / 0.28), 0 6px 16px rgb(6 4 10 / 0.22);
+  --shadow-lift: 0 2px 6px rgb(6 4 10 / 0.34), 0 14px 32px rgb(6 4 10 / 0.3);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --canvas: #fafafb;
+  --plate: #ffffff;
+  --plate-2: #f3f3f6;
+  --rule: rgb(11 10 15 / 0.1);
+  --rule-lit: rgb(11 10 15 / 0.18);
+  --type: #16151c;
+  --note: #5c5869;
+  /* On light, one value does both jobs: 5.91:1 as text, 6.17:1 under white. */
+  --mark: #7343cc;
+  --mark-solid: #7343cc;
+  --mark-tint: rgb(115 67 204 / 0.1);
+  --on-mark: #ffffff;
+
+  --danger: #dc2626; /* red-600, legible on a light ground */
+
+  --shadow-plate: 0 1px 2px rgb(11 10 15 / 0.06), 0 8px 24px rgb(11 10 15 / 0.08);
+  --shadow-soft: 0 1px 2px rgb(11 10 15 / 0.05), 0 6px 16px rgb(11 10 15 / 0.07);
+  --shadow-lift: 0 2px 6px rgb(11 10 15 / 0.08), 0 14px 32px rgb(11 10 15 / 0.12);
+}
+
+/* ---------------------------------------------------------------------------
+   SHADCN ALIAS LAYER
+
+   shadcn/ui components are written against its own token vocabulary
+   (--background, --primary, --muted...). Rather than maintaining a second
+   palette, every shadcn name is an ALIAS onto the semantic tokens above.
+
+   These are declared once, not per theme: `var()` resolves at use time, so
+   they inherit the theme swap automatically. One source of truth. Changing
+   --canvas changes every shadcn component with it.
+--------------------------------------------------------------------------- */
+
+:root {
+  --background: var(--canvas);
+  --foreground: var(--type);
+
+  --card: var(--plate);
+  --card-foreground: var(--type);
+  --popover: var(--plate);
+  --popover-foreground: var(--type);
+
+  --primary: var(--mark-solid);
+  --primary-foreground: var(--on-mark);
+
+  --secondary: var(--plate-2);
+  --secondary-foreground: var(--type);
+  --accent: var(--plate-2);
+  --accent-foreground: var(--type);
+
+  --muted: var(--plate-2);
+  --muted-foreground: var(--note);
+
+  --destructive: var(--danger);
+  --destructive-foreground: var(--on-mark);
+
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--mark);
+
+  /* Not shadcn's 0.5rem default. design-taste-frontend requires shadcn be
+     customised away from its default state, and the softer radius matches
+     the type's rounded terminals. */
+  --radius: 0.75rem;
+}
+
+/* ---------------------------------------------------------------------------
+   TOKEN BRIDGE
+
+   `@theme inline` maps the semantic vars above onto Tailwind utilities, so
+   `bg-canvas` / `text-note` / `border-rule` resolve through var() and follow
+   the theme swap. Without `inline` they would freeze at build time.
+--------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-plate: var(--plate);
+  --color-plate-2: var(--plate-2);
+  --color-rule: var(--rule);
+  --color-rule-lit: var(--rule-lit);
+  --color-type: var(--type);
+  --color-note: var(--note);
+  --color-mark: var(--mark);
+  --color-mark-solid: var(--mark-solid);
+  --color-mark-tint: var(--mark-tint);
+  --color-on-mark: var(--on-mark);
+  --color-danger: var(--danger);
+
+  /* shadcn utility names, resolving to the same values */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+
+  /* Built-in CSS easings are too weak. These deliberately override Tailwind's
+     `ease-out` / `ease-in-out` utilities so the whole codebase gets the
+     stronger curves without anyone remembering to opt in. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+--------------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--type);
+    font-family: var(--font-display);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Theme swap animates COLOR ONLY, and only at the root. A blanket
+     `transition: all` makes the swap crawl and repaints the world. Borders
+     and shadows change instantly and nobody notices. */
+  html,
+  body {
+    transition:
+      background-color 150ms var(--ease-out),
+      color 150ms var(--ease-out);
+  }
+
+  /* --canvas, not --on-mark. On dark, --mark is the LIGHT violet, so white
+     text on it would fail. The canvas colour inverts correctly in both themes:
+     7.10:1 on dark, 5.91:1 on light. */
+  ::selection {
+    background-color: var(--mark);
+    color: var(--canvas);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--mark);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Long-form measure. Applied via the `.measure` utility, not globally. */
+  .measure {
+    max-width: 65ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  html,
+  body {
+    transition: none;
+  }
+}
