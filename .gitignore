@@ -1,0 +1,30 @@
+node_modules
+dist
+dist-ssr
+*.local
+
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.env
+.env.local
+.env.*.local
+.vercel
+
+# Playwright MCP output
+.playwright-mcp
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# Agent tooling. Reinstallable from skills-lock.json, and it is third-party
+# code that would only add noise to a portfolio repo.
+.agents/
+.claude/
