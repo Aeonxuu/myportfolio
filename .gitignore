@@ -28,3 +28,6 @@ pnpm-debug.log*
 # code that would only add noise to a portfolio repo.
 .agents/
 .claude/
+
+# Resume source: contains a phone number. Used to write src/data, never published.
+assets/information/
