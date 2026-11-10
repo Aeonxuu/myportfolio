@@ -52,6 +52,23 @@ export interface DesignPiece {
   year?: number
 }
 
+/** A live site that was designed and built, shown with a screenshot thumbnail. */
+export interface WebProject {
+  slug: string
+  title: string
+  /** Bare domain, shown under the title. */
+  domain: string
+  url: string
+  /** One line on what the site is and who it serves. */
+  summary: string
+  /** Where the business is, for context. */
+  location: string
+  thumb: string
+  /** Intrinsic pixels of the thumb, to reserve the box and hold CLS at zero. */
+  width: number
+  height: number
+}
+
 export interface Project {
   slug: string
   title: string
@@ -83,4 +100,30 @@ export interface TimelineEntry {
   end?: string
   /** Bullets carrying numbers wherever possible. */
   points: string[]
+}
+
+export interface Role {
+  org: string
+  title: string
+  place: string
+  period: string
+  points: string[]
+}
+
+export interface SchoolEntry {
+  name: string
+  program: string
+  status: string
+  note: string
+}
+
+export interface Achievement {
+  title: string
+  detail: string
+  year: string
+}
+
+export interface Toolkit {
+  group: string
+  items: string[]
 }

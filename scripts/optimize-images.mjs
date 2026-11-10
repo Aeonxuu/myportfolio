@@ -26,6 +26,15 @@ const JOBS = [
     variants: [{ suffix: '', width: 2000, quality: 82 }],
   },
   {
+    label: 'websites',
+    from: A('websites'),
+    to: P('websites'),
+    match: /\.(png|jpe?g)$/i,
+    // Viewport screenshots captured at 1440x900 (16:10). Shown at ~560px in a
+    // two-column grid, so 1200px stays crisp at 2x without carrying the full size.
+    variants: [{ suffix: '', width: 1200, quality: 82 }],
+  },
+  {
     label: 'certificates',
     from: A('certificates'),
     to: P('certificates'),
@@ -41,18 +50,35 @@ const JOBS = [
     label: 'profile',
     from: A(),
     to: P(),
-    match: /^lj_profile\.(jpe?g|png)$/i,
-    // Source is now a high-quality PNG rather than a pre-compressed JPEG, so
-    // it takes a higher quality without the file growing. 1200px is comfortably
-    // 2x for the frame it renders in.
-    // The source has a halftone filter baked in. A regular dot grid is the
-    // worst case for both compression AND downscaling: at 1000px scaled into a
-    // ~320px frame the dots interfere with the pixel grid and turn to moire
-    // mud. 640px is close enough to the rendered size that the halftone reads
-    // as intentional grain, and it is 233 KB instead of 358 KB.
-    variants: [{ suffix: '', width: 640, quality: 80, effort: 6 }],
+    // Background-removed portrait supplied by the owner (transparent PNG,
+    // 1122x1402). `trimTop` drops the empty rows above her hair so the photo
+    // can sit higher against the word behind it. WebP keeps the alpha channel.
+    match: /^lj_profile_real\.png$/i,
+    trimTop: true,
+    variants: [{ suffix: '', width: 1000, quality: 84, effort: 6 }],
   },
 ]
+
+/**
+ * Cleans and crops a cut-out. Faint stray pixels (alpha under 30 of 255) are
+ * left over from the background removal and show as grey specks on a light
+ * page, so they are made fully transparent. Then fully transparent rows are
+ * cropped from the top edge only; sides and bottom stay as shot.
+ */
+async function trimTransparentTop(file) {
+  const { data, info } = await sharp(file).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+  for (let i = 3; i < data.length; i += 4) if (data[i] < 30) data[i] = 0
+  let top = 0
+  rows: for (; top < info.height; top++) {
+    for (let x = 0; x < info.width; x++) {
+      if (data[(top * info.width + x) * 4 + 3] > 0) break rows
+    }
+  }
+  return sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } })
+    .extract({ left: 0, top, width: info.width, height: info.height - top })
+    .png()
+    .toBuffer()
+}
 
 const kb = (n) => `${(n / 1024).toFixed(0)} KB`
 
@@ -77,7 +103,9 @@ async function run() {
       for (const v of job.variants) {
         const out = path.join(job.to, `${base}${v.suffix}.webp`)
         const meta = await sharp(src).metadata()
-        await sharp(src)
+        let input = sharp(src)
+        if (job.trimTop) input = sharp(await trimTransparentTop(src))
+        await input
           // `inside` never crops and never enlarges past the original.
           .resize({ width: v.width, fit: 'inside', withoutEnlargement: true })
           .webp({ quality: v.quality, effort: v.effort ?? 4, smartSubsample: true })
