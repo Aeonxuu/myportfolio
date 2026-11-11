@@ -1,5 +1,5 @@
 import { ArrowDownIcon, GithubLogoIcon, LinkedinLogoIcon } from '@phosphor-icons/react'
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { easeOut, motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'motion/react'
 import { useRef } from 'react'
 import { profile } from '@/data/profile'
 import { school } from '@/data/education'
@@ -17,28 +17,72 @@ const LINKS = [
   { href: profile.links.github, label: 'GitHub', Icon: GithubLogoIcon },
 ]
 
+const WORD = 'Overview'
+
+/** Where each letter starts, in em of the word size, plus a spin in degrees.
+ *  Fixed values rather than random: the same scatter every visit, no hydration
+ *  mismatch, and the composition is chosen rather than left to chance. */
+const SCATTER = [
+  { x: -2.4, y: -1.1, r: -38 },
+  { x: -1.1, y: 1.6, r: 26 },
+  { x: -0.4, y: -1.8, r: 44 },
+  { x: 0.6, y: 1.3, r: -30 },
+  { x: 1.2, y: -1.4, r: 36 },
+  { x: 1.9, y: 1.7, r: -42 },
+  { x: 2.3, y: -0.9, r: 28 },
+  { x: 3.0, y: 1.2, r: -34 },
+]
+
+/**
+ * One letter of the heading. Driven directly by scroll position, so scrolling
+ * back un-assembles it. Each letter starts a little after the one before it and
+ * every one is finished by 83% of the range, which leaves a held, fully
+ * assembled word rather than one that is still settling when you reach it.
+ */
+function Letter({ char, i, progress }: { char: string; i: number; progress: MotionValue<number> }) {
+  const from = SCATTER[i % SCATTER.length]!
+  const start = i * 0.03
+  const end = start + 0.62
+  const opts = { ease: easeOut }
+  const x = useTransform(progress, [start, end], [`${from.x}em`, '0em'], opts)
+  const y = useTransform(progress, [start, end], [`${from.y}em`, '0em'], opts)
+  const rotate = useTransform(progress, [start, end], [from.r, 0], opts)
+  const opacity = useTransform(progress, [start, start + 0.3], [0, 1])
+
+  return (
+    <motion.span aria-hidden style={{ x, y, rotate, opacity }} className="inline-block will-change-transform">
+      {char}
+    </motion.span>
+  )
+}
+
 /**
  * The overview spread. The word sits behind her cut-out portrait so her hair
- * and shoulders overlap its last letters. As the section scrolls the word
- * slides sideways while she stays put, which is what makes it read as layers.
+ * and shoulders overlap its last letters. As the section scrolls into view the
+ * letters fly in from all sides and lock together into the word, while she
+ * drifts slightly on her own layer.
  */
 export function Overview() {
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const wordX = useTransform(scrollYProgress, [0, 1], ['4%', '-4%'])
+  // The word assembles between the section entering the screen and its top
+  // reaching 15% down, so it is complete before the visitor reads past it.
+  const { scrollYProgress: assemble } = useScroll({ target: ref, offset: ['start end', 'start 0.15'] })
   const photoY = useTransform(scrollYProgress, [0, 1], ['3%', '-3%'])
 
   return (
     <section id="overview" ref={ref} className="relative scroll-mt-0 overflow-clip px-(--gutter) pt-[clamp(4.5rem,9vw,8rem)] [--word-size:clamp(3.5rem,17.5vw,15.5rem)]">
       <div className="mx-auto max-w-[1280px]">
         <div className="grid grid-cols-1 gap-x-8 lg:grid-cols-12">
-          <motion.h2
-            style={reduce ? undefined : { x: wordX }}
+          <h2
+            aria-label={WORD}
             className="relative z-0 col-span-full row-start-1 select-none font-display text-[length:var(--word-size)] leading-[0.86] tracking-[-0.045em] text-word"
           >
-            Overview
-          </motion.h2>
+            {reduce
+              ? WORD
+              : WORD.split('').map((char, i) => <Letter key={i} char={char} i={i} progress={assemble} />)}
+          </h2>
 
           <motion.div
             style={reduce ? undefined : { y: photoY }}
