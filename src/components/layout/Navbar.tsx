@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { cn } from '@/lib/utils'
 
 const LINKS = [
   { href: '#overview', label: 'Overview' },
@@ -8,50 +6,28 @@ const LINKS = [
 ]
 
 /**
- * A single flat bar. Transparent over the masthead, then it takes the page
- * colour and a hairline once the visitor has scrolled. The listener is passive
- * and only sets state when the answer changes.
+ * A floating glass pill, fixed to the bottom centre. The only place on the
+ * site that uses blur: the page scrolls underneath and shows through it.
+ * `env(safe-area-inset-bottom)` keeps it clear of the iOS home indicator.
  */
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 24)
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    return () => window.removeEventListener('scroll', update)
-  }, [])
-
   return (
-    <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color] duration-200 ease-out',
-        scrolled ? 'border-rule bg-canvas' : 'border-transparent bg-transparent',
-      )}
-    >
+    <header className="pointer-events-none fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex justify-center px-4">
       <nav
         aria-label="Primary"
-        className="mx-auto flex h-14 max-w-[1600px] items-center justify-between px-(--gutter)"
+        className="pointer-events-auto flex items-center gap-1 rounded-full border border-white/40 bg-canvas/30 px-2 py-1 shadow-[0_8px_32px_rgb(0_0_0/0.12),inset_0_1px_0_rgb(255_255_255/0.45)] backdrop-blur-lg backdrop-saturate-150 dark:border-white/12 dark:shadow-[0_8px_32px_rgb(0_0_0/0.4),inset_0_1px_0_rgb(255_255_255/0.08)]"
       >
-        <a
-          href="#top"
-          className="font-serif text-[1.125rem] italic tracking-[-0.01em] transition-colors duration-150 hover:text-mark"
-        >
-          L. dela Cruz
-        </a>
-
-        <div className="flex items-center gap-1 sm:gap-3">
-          {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="inline-flex h-11 items-center px-2 text-[0.9375rem] font-medium transition-colors duration-150 hover:text-mark"
-            >
-              {l.label}
-            </a>
-          ))}
-          <ThemeToggle className="-mr-2" />
-        </div>
+        {LINKS.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            className="inline-flex h-11 items-center rounded-full px-4 text-[0.9375rem] font-medium transition-colors duration-150 hover:bg-type/8 hover:text-mark"
+          >
+            {l.label}
+          </a>
+        ))}
+        <span aria-hidden className="mx-1 h-5 w-px bg-rule-lit" />
+        <ThemeToggle className="rounded-full hover:bg-type/8" />
       </nav>
     </header>
   )

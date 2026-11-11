@@ -19,7 +19,7 @@ export default function App() {
         <Overview />
         <Folder />
       </main>
-      <footer className="px-(--gutter) pb-10">
+      <footer className="px-(--gutter) pb-28">
         <p className="mx-auto max-w-[1280px] border-t border-rule pt-5 text-[0.875rem] text-note">
           Designed and built by {profile.name}
         </p>
