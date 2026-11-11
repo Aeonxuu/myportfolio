@@ -28,7 +28,7 @@ The audience is recruiters and internship leads. The single job of the page is t
 | Themes | Light default, dark by toggle | Owner chose light first. OS preference no longer overrides |
 | Folder | Landscape with top tabs on desktop, portrait with sideways right-edge tabs below 1024px | Mobile-first |
 | Components | shadcn Dialog and Button on Radix, aliased onto the tokens | Lightbox needs focus management |
-| Certificates | 1.91:1 thumbnails in the Credentials tab, lightbox with Verify | All 23 source images are an identical 1772x928 |
+| Certificates | 1.91:1 thumbnails in the Credentials tab, lightbox with Verify | Source images are 1772x928, except the SAP certificate (1.45:1, rendered from a PDF), which the grid crops from the top |
 | Hosting | Vercel free tier, static | Free, no cold starts, custom domain |
 
 ### What was deliberately dropped
@@ -280,6 +280,28 @@ Rebuilt the whole front end from the owner's brief, using the installed design s
 - Verified at 320, 390, 768, 1024, 1440 and 1920: no horizontal overflow, the tab bar fits in
   every folder, reduced motion renders the final state, both themes checked. Impeccable's
   detector: 0 findings.
+
+### 2026-11-11 - Works, bottom navbar, scroll choreography
+
+- **Works:** added The Third Space (web magazine, `kapehan.jpg`) and Agi (portrait mobile app,
+  three screens shown side by side). Tab renamed "Web & apps". Added the SAP certificate (PDF
+  rendered to PNG, no verify link).
+- **Navbar:** the top bar became a floating glass pill at the bottom centre (Overview, Folder,
+  theme toggle). The one place the site uses blur; recorded as an exception in DESIGN.md.
+- **Hero wall:** the page opens on her name repeated in 8 rows that fill the screen (each row
+  the same serif-over-sans lockup as the masthead). The hero is now a 300svh section with a
+  pinned stage; scroll drives it: rows drift sideways, then slide out and fade bottom row first,
+  and the large two-line name rises into the space (`Hero.tsx`, timings in the `T` constant).
+  Fully reversible. Reduced motion renders the plain masthead with no tall section. All hero
+  ramps use an explicit clamped `useRamp` helper: range-based `useTransform` on these scroll
+  values was observed drifting back toward its start value at the end of the scroll.
+- **Overview word:** the eight letters of "Overview" start scattered and rotated and assemble as
+  the section scrolls in (scroll-scrubbed, so it reverses on the way back). Done by 83% of the range.
+- **Folder magnet** (`src/hooks/useMagnet.ts`): on desktop with a mouse, when scrolling comes to
+  rest within 40% of the viewport height of centre and the visitor was heading toward the folder,
+  the page eases it to the middle of the space above the navbar. One-way by design: it never
+  pulls you back once you scroll past, so the footer stays reachable. Any wheel, touch, key or
+  click cancels it. Off on touch devices, below 1024px and with reduced motion.
 
 ## 8. Outstanding
 

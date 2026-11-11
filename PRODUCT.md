@@ -46,7 +46,7 @@ Looking for a remote 3 to 6 month internship starting December 2026. Takes freel
 ## Evidence on Hand
 
 - Resume: `assets/information/Lalaine_Dela_Cruz_Resume_GAO_Web_Developer_Intern.pdf` (education, three roles, one capstone project, awards, toolkit).
-- 23 certificates as images (`assets/certificates/`), 11 design pieces (`assets/creative_projects/`), 2 live client sites with screenshots (`assets/websites/`), a studio portrait (`assets/lalaine_profile_photo.png`).
+- 23 certificates as images (`assets/certificates/`), 11 design pieces (`assets/creative_projects/`), 2 live client sites, a web magazine and a mobile app, all with screenshots (`assets/websites/`), a studio portrait (`assets/lalaine_profile_photo.png`).
 - Absent: testimonials, client logos, a project case study beyond the resume bullets. None may be invented.
 
 ## Product Principles

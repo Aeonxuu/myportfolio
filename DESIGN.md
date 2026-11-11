@@ -32,11 +32,11 @@ Light is the default and the OS preference does not override it; only the toggle
 
 ## Margins
 
-One token, `--gutter: clamp(1.5rem, 7vw, 7rem)`, sets the left and right margin of every section, the navbar and the footer, so all edges line up down the page (24px on phones, about 100px at 1440, 112px at wide screens).
+One token, `--gutter: clamp(1.5rem, 7vw, 7rem)`, sets the left and right margin of every section and the footer, so all edges line up down the page (24px on phones, about 100px at 1440, 112px at wide screens).
 
 ## Shape and depth
 
-Square corners everywhere except the folder: tabs and body corners are 9-10px. No shadows, no gradients, no glass. Separation is hairlines (`--rule`) and the violet itself.
+Square corners everywhere except the folder: tabs and body corners are 9-10px. No shadows, no gradients, no glass, with one exception: the navbar is a floating glass pill at the bottom centre (blur, soft shadow). Separation is hairlines (`--rule`) and the violet itself.
 
 ## The folder
 

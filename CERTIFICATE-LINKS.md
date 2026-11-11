@@ -28,7 +28,14 @@ This may be legitimate if one is the specialization and the other a course insid
 - [ ] `certificate_iot` - Internet of Things
 - [ ] `certificate_iot_raspberry_python_programming` - IoT: Raspberry Pi and Python
 
-### 3. One orphaned URL
+### 3. No link supplied
+
+- [ ] `certificate_react_native` - React Native
+- [ ] `certificate_sap` - SAP Analytics Cloud. ASEAN Data Science Explorers 2026, issued as a
+  PDF with no public verification link (original kept as `certificate_sap.pdf`; the site uses
+  the `certificate_sap.png` render). Renders without a Verify button until or unless one exists.
+
+### 4. One orphaned URL
 
 `coursera.org/share/3bac956c18ea6070aa153ac864220432`
 
