@@ -19,7 +19,7 @@ export interface Certificate {
    *  Not the platform: "UC Irvine" carries weight with a recruiter, "Coursera"
    *  does not. */
   issuer: string
-  /** Where it was taken. Always Coursera here. */
+  /** Where it was taken. Coursera unless the certificate came from elsewhere. */
   platform: string
   /** Specialization certificates sit above the individual courses. */
   isSpecialization?: boolean
@@ -52,10 +52,15 @@ export interface DesignPiece {
   year?: number
 }
 
-/** A live site that was designed and built, shown with a screenshot thumbnail. */
+/** A live site or app that was designed and built, shown with screenshots. */
 export interface WebProject {
   slug: string
   title: string
+  /** 'app' is a portrait mobile app: it shows a row of phone screens instead
+   *  of one landscape screenshot. Absent means a desktop website. */
+  kind?: 'site' | 'app'
+  /** Portrait screens for kind 'app', each at `width` x `height`. */
+  screens?: string[]
   /** Bare domain, shown under the title. */
   domain: string
   url: string
@@ -115,6 +120,8 @@ export interface SchoolEntry {
   program: string
   status: string
   note: string
+  /** The same facts as `note`, one per line, for the Education panel's list. */
+  facts: { term: string; def: string }[]
 }
 
 export interface Achievement {

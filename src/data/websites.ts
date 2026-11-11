@@ -32,4 +32,30 @@ export const webProjects: WebProject[] = [
     width: 1200,
     height: 750,
   },
+  {
+    slug: 'kapehan',
+    title: 'The Third Space',
+    domain: 'aeonxuu.github.io/Kapehan',
+    url: 'https://aeonxuu.github.io/Kapehan/',
+    summary:
+      'An editorial web magazine on cafe-hopping and third-place culture in Lucena, with a feature story, a Hall of Cafes, a behind-the-lens photo essay and credits.',
+    location: 'Lucena, Quezon',
+    thumb: '/websites/kapehan.webp',
+    width: 1200,
+    height: 661,
+  },
+  {
+    slug: 'agi',
+    title: 'Agi',
+    kind: 'app',
+    domain: 'aeonxuu.github.io/baytrans',
+    url: 'https://aeonxuu.github.io/baytrans/',
+    summary:
+      'Portrait-mode mobile app that teaches people to read and write Baybayin, with guided modules, tracing practice scored on accuracy, and quizzes led by the mascot Prof. Agi.',
+    location: 'Mobile app',
+    thumb: '/websites/agi.webp',
+    screens: ['/websites/agi.webp', '/websites/agi-learn.webp', '/websites/agi-practice.webp'],
+    width: 390,
+    height: 844,
+  },
 ]

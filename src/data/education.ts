@@ -5,6 +5,12 @@ export const school: SchoolEntry = {
   program: 'BS Information Technology',
   status: 'Expected 2027',
   note: 'College Scholar for 5 semesters. Currently a 4th year student and IT Representative at MASTECH.',
+  facts: [
+    { term: 'Year', def: '4th year' },
+    { term: 'Expected', def: 'Graduating 2027' },
+    { term: 'Standing', def: 'College Scholar, 5 semesters' },
+    { term: 'Role', def: 'IT Representative, MASTECH' },
+  ],
 }
 
 /** Awards and standing, from the resume and the repository. */

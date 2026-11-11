@@ -22,7 +22,7 @@ export function WorksPanel() {
           value={view}
           onChange={setView}
           options={[
-            { value: 'websites', label: 'Websites', count: webProjects.length },
+            { value: 'websites', label: 'Web & apps', count: webProjects.length },
             { value: 'design', label: 'Design', count: designPieces.length },
           ]}
         />
@@ -40,15 +40,34 @@ export function WorksPanel() {
               className="group block"
             >
               <div className="overflow-hidden border border-rule">
-                <img
-                  src={asset(site.thumb)}
-                  alt={`${site.title} homepage`}
-                  width={site.width}
-                  height={site.height}
-                  loading="lazy"
-                  decoding="async"
-                  className="block aspect-[16/10] w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.025] motion-reduce:transform-none"
-                />
+                {site.kind === 'app' && site.screens ? (
+                  // Portrait screens sit in the same 16:10 frame as the sites so
+                  // the grid stays even, each at its true ratio and never cropped.
+                  <div className="flex aspect-[16/10] w-full items-center justify-center gap-[3%] bg-sheet px-[4%] py-[5%] transition-transform duration-500 ease-out group-hover:scale-[1.025] motion-reduce:transform-none">
+                    {site.screens.map((src, i) => (
+                      <img
+                        key={src}
+                        src={asset(src)}
+                        alt={i === 0 ? `${site.title} app screens` : ''}
+                        width={site.width}
+                        height={site.height}
+                        loading="lazy"
+                        decoding="async"
+                        className="block h-full min-w-0 flex-1 border border-rule object-cover object-top"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <img
+                    src={asset(site.thumb)}
+                    alt={`${site.title} homepage`}
+                    width={site.width}
+                    height={site.height}
+                    loading="lazy"
+                    decoding="async"
+                    className="block aspect-[16/10] w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.025] motion-reduce:transform-none"
+                  />
+                )}
               </div>
               <div className="mt-4 flex items-start justify-between gap-4">
                 <div>

@@ -41,6 +41,8 @@ const TITLES = {
   certificate_mern_specialization: 'MERN Stack Specialization',
   certificate_operating_system_virtualization: 'Operating Systems and Virtualisation',
   certificate_relational_database_administration: 'Relational Database Administration',
+  certificate_react_native: 'React Native',
+  certificate_sap: 'SAP Analytics Cloud',
 }
 
 /** Read off the certificate images themselves. Coursera is the platform; these
@@ -70,6 +72,14 @@ const ISSUERS = {
   certificate_mern_specialization: 'Packt',
   certificate_operating_system_virtualization: 'Illinois Tech',
   certificate_relational_database_administration: 'IBM',
+  certificate_react_native: 'Meta',
+  certificate_sap: 'SAP and ASEAN Foundation',
+}
+
+/** Everything is Coursera unless listed here. The SAP certificate comes from
+ *  the ASEAN Data Science Explorers 2026 programme and has no public link. */
+const PLATFORMS = {
+  certificate_sap: 'ASEAN Data Science Explorers',
 }
 
 /** Specialization certificates, which sit above the individual courses. */
@@ -93,6 +103,7 @@ const SYSTEMS = new Set([
   'certificate_linux_sql',
   'certificate_relational_database_administration',
   'certificate_automation_uipath',
+  'certificate_sap',
 ])
 
 function parseLinks(text) {
@@ -168,7 +179,7 @@ const body = rows
       `    slug: ${j(r.slug)},`,
       `    title: ${j(r.title)},`,
       `    issuer: ${j(ISSUERS[r.slug] ?? 'Coursera')},`,
-      `    platform: ${j('Coursera')},`,
+      `    platform: ${j(PLATFORMS[r.slug] ?? 'Coursera')},`,
       SPECIALIZATIONS.has(r.slug) ? '    isSpecialization: true,' : null,
       `    category: ${j(r.category)},`,
       `    thumb: ${j(`/certificates/${r.slug}.webp`)},`,

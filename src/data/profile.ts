@@ -10,7 +10,7 @@ export const profile = {
 
   /** Overview section. Short on purpose: the folder holds the detail. */
   overview: [
-    "I'm a 4th year BSIT student who designs the visuals and writes the code. So far that has meant two live client websites, 50+ marketing pieces, and a capstone app defended in October 2026.",
+    "I'm a 4th year BSIT student who designs the visuals and writes the code. So far that has meant two live client websites, two personal web and app projects, 50+ marketing pieces, and a capstone app defended in October 2026.",
     "My passion lies in graphic and web design, and lately in generative AI.",
   ],
 

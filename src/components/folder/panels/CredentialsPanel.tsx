@@ -50,7 +50,8 @@ export function CredentialsPanel() {
               className="group block w-full cursor-pointer text-left"
             >
               <span className="block overflow-hidden border border-rule">
-                {/* 1772x928 on every source image: one fixed ratio, no letterboxing. */}
+                {/* Most sources are 1772x928. A wider-page one (SAP, 1.45:1) is cropped from
+                    the top so its logos and title stay in view. */}
                 <img
                   src={asset(cert.thumb)}
                   alt=""
@@ -58,7 +59,7 @@ export function CredentialsPanel() {
                   height={928}
                   loading="lazy"
                   decoding="async"
-                  className="block aspect-[1772/928] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
+                  className="block aspect-[1772/928] w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
                 />
               </span>
               <span className="mt-2 block text-[0.9375rem] font-medium leading-snug">{cert.title}</span>
